@@ -1,13 +1,12 @@
 import java.util.Random;
 
 public class Main {
-    public static int heroesMedic = 60;
     public static int bossHealth = 700;
     public static int bossDamage = 50;
     public static String bossDefenceType;
-    public static int[] heroesHealth = {250, 270, 280};
-    public static int[] heroesDamage = {25, 20, 15};
-    public static String[] heroesAttackType = {"Physical", "Magical", "Kinetic"};
+    public static int[] heroesHealth = {250, 270, 280,300,350,310,260,340};
+    public static int[] heroesDamage = {25, 20, 15,10,40,30,20,30};
+    public static String[] heroesAttackType = {"Physical", "Magical", "Kinetic","Medic","Golem"," Lucky","Berserk","Thor"};
     public static int roundNumber = 0;
 
     public static void main(String[] args) {
@@ -22,7 +21,75 @@ public class Main {
         chooseBossDefence();
         bossHits();
         heroesHit();
+        medic();
+        golem();
+        lucky();
+        berserk();
+        thor();
         printStatistics();
+    }
+
+
+    public static void thor(){
+        Random random = new Random();
+        boolean thors = random.nextBoolean();
+        if (heroesHealth[7] > 0 && thors == true) {
+            bossDamage = 0;
+            System.out.println("Оглушил на 1 раунд - " + thors);
+        }else {
+            bossDamage = 50;
+        }
+    }
+
+    public static void berserk() {
+        int getDamageBerserker = bossDamage / 2;
+        if (heroesHealth[6] > 0) {
+            heroesDamage[6] = heroesDamage[6] + getDamageBerserker;
+            System.out.println("Berserk Atakuet - " + getDamageBerserker);
+        }
+
+    }
+
+    public static void lucky() {
+        Random random = new Random();
+        boolean rand = random.nextBoolean();
+        if (heroesHealth[5] > 0 && rand == true) {
+            heroesHealth[5] += 40;
+            System.out.println("Dodged damage - " + rand);
+        }
+    }
+
+
+    public static void golem() {
+        int getDamege = bossDamage / 5;
+
+        for (int i = 0; i < heroesHealth.length; i++) {
+            if (heroesHealth[4] > 0 && heroesHealth[i] > 0 && heroesHealth[4] != heroesHealth[i]) {
+                heroesHealth[i] += getDamege;
+                heroesHealth[4] -= getDamege;
+            }
+
+        }
+        System.out.println("Gilem get 1/5 damege for - " + getDamege);
+    }
+
+
+
+
+
+
+
+    private static void medic() {
+     for (int i = 0; i < heroesHealth.length; i++) {
+            if (i == 3){
+                continue;
+            }if (heroesHealth[i]>0 && heroesHealth[i]<100 && heroesHealth[3] > 0){
+                Random random = new Random();
+               int hilit = random.nextInt(100);
+               heroesHealth[i] = hilit + heroesHealth[i];
+                System.out.println("Медик вылечил " + heroesAttackType[i] + " " + hilit);
+            }break;
+        }
     }
 
     public static void printStatistics() {
